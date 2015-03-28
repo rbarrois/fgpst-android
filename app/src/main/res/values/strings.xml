@@ -1,16 +1,15 @@
 <resources>
     <string name="app_name">FreeGPSTracker</string>
 
-    <string name="button_toggle">Tracker</string>
+    <string name="button_toggle">Track!</string>
 
     <string name="desc_logo">Logo</string>
 
-    <string name="hint_url">https://free-gps-tracker.appspot
-        .com/fgpst/tracker/positions/DEVICE_ID</string>
+    <string name="hint_url">https://free-gps-tracker.appspot.com/fgpst/tracker/positions/</string>
 
     <string name="invalid_number">Invalid number</string>
 
-    <string name="menu_settings">Settings</string>
+    <string name="action_settings">settings</string>
 
     <string name="pref_gps_updates">GPS Updates (seconds)</string>
     <string name="pref_gps_updates_summary">Update GPS position approximately every… (30 seconds minimum)</string>

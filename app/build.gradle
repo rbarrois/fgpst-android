@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.pawciobiel.fgpst"
-        minSdkVersion 15
-        targetSdkVersion 21
+        minSdkVersion 8
+        targetSdkVersion 15
         versionCode 1
         versionName "1.0"
     }

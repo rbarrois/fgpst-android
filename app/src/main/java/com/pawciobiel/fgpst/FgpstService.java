@@ -57,7 +57,7 @@ public class FgpstService extends IntentService implements LocationListener {
         editor.commit();
         pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "30")); // seconds
         pref_max_run_time = Integer.parseInt(preferences.getString("pref_max_run_time", "24")); // hours
-        urlText = preferences.getString("URL", "");
+        urlText = preferences.getString("URL", "");  // hint_url
         if (urlText.contains("?")) {
             urlText = urlText + "&";
         } else {
@@ -138,19 +138,26 @@ public class FgpstService extends IntentService implements LocationListener {
         JSONObject json = new JSONObject();
         String timestampStr = String.format("%tFT%<tT.%<tLZ",
                 Calendar.getInstance(TimeZone.getTimeZone("Z")));
+        // FIXME: I should use location.getTime()
 
         double lat = location.getLatitude();
         double lon = location.getLongitude();
+        double alt = location.getAltitude();
+        float speed = location.getSpeed();
+        float bearing = location.getBearing();
 
         try {
             json.put("lat", String.format("%.6f", lat));
             json.put("lon", String.format("%.6f", lon));
+            json.put("alt", String.format("%.6f", alt));
+            json.put("speed", String.format("%.6f", speed));
+            json.put("bearing", String.format("%.6f", bearing));
             json.put("timestamp", timestampStr);
         } catch (org.json.JSONException exc){
             Log.d(MY_TAG, "error generating json: " + exc.toString());
         }
 
-        // TODO: update app with last position
+        // TODO: update app with last position latestUpdate
         new FgpstServiceRequest().execute(urlText, json.toString());
     }
 

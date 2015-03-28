@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Patterns;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
@@ -17,6 +18,28 @@ public class FgpstPreferenceActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         Preference pref;
+
+        pref = findPreference("URL");
+        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String oldValue = preferences.getString("URL", "");
+                if (newValue == null
+                        || newValue.toString().trim().length() == 0
+                        || !Patterns.WEB_URL.matcher(newValue.toString()).matches()) {
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.text_legend_url_invalid), Toast.LENGTH_LONG).show();
+                    return false;
+                } else if (FgpstService.isRunning
+                        && (newValue.toString() != oldValue)) {
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.toast_prefs_restart),
+                            Toast.LENGTH_LONG).show();
+                }
+                return true;
+            }
+        });
 
         pref = findPreference("pref_gps_updates");
         pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {

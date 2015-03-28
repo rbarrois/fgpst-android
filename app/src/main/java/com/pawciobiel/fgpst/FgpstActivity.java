@@ -3,7 +3,9 @@ package com.pawciobiel.fgpst;
 import java.text.DateFormat;
 import java.util.Date;
 
+import android.support.v7.app.ActionBar;
 import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +30,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.util.Patterns;
 
-public class FgpstActivity extends Activity implements LocationListener {
+public class FgpstActivity extends ActionBarActivity implements LocationListener {
 
     private final static String CONNECTIVITY = "android.net.conn.CONNECTIVITY_CHANGE";
 
@@ -61,8 +63,10 @@ public class FgpstActivity extends Activity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fgpst);
 
-        edit_url = (EditText) findViewById(R.id.edit_url);
-        text_legend_url_1 = (TextView) findViewById(R.id.text_legend_url_1);
+        ActionBar actionBar = getSupportActionBar();
+        if (!actionBar.isShowing())
+            actionBar.show();
+
         text_gps_status = (TextView) findViewById(R.id.text_gps_status);
         text_network_status = (TextView) findViewById(R.id.text_network_status);
         button_toggle = (ToggleButton) findViewById(R.id.button_toggle);
@@ -71,43 +75,13 @@ public class FgpstActivity extends Activity implements LocationListener {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences.contains("URL") &&
                 (Patterns.WEB_URL.matcher(preferences.getString("URL", ""))
-                    .matches())) {
-            edit_url.setText(preferences.getString("URL", getString(R.string.hint_url)));
-            text_legend_url_1.setText(getString(R.string.text_legend_url_ok));
+                        .matches())) {
             button_toggle.setEnabled(true);
-            edit_url.clearFocus();
         } else {
             button_toggle.setEnabled(false);
-            text_legend_url_1.setText(getString(R.string.text_legend_url_invalid));
-            text_legend_url_1.setTextColor(Color.RED);
-            edit_url.requestFocus();
+            text_gps_status.setText(getString(R.string.text_legend_url_invalid));
+            text_gps_status.setTextColor(Color.RED);
         }
-        edit_url.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                SharedPreferences.Editor editor = preferences.edit();
-                String urlString = s.toString().trim();
-                if (Patterns.WEB_URL.matcher(urlString).matches()) {
-                    text_legend_url_1.setText(getString(R.string.text_legend_url_ok));
-                    button_toggle.setEnabled(true);
-                } else {
-                    button_toggle.setEnabled(false);
-                    text_legend_url_1.setText(getString(R.string.text_legend_url_invalid));
-                    text_legend_url_1.setTextColor(Color.RED);
-                    edit_url.requestFocus();
-                }
-                editor.putString("URL", urlString);
-                editor.commit();
-            }
-        });
 
         registerReceiver(receiver, new IntentFilter(FgpstService.NOTIFICATION));
         registerReceiver(receiver, new IntentFilter(FgpstActivity.CONNECTIVITY));
@@ -156,7 +130,7 @@ public class FgpstActivity extends Activity implements LocationListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent i;
         switch (item.getItemId()) {
-            case R.id.menu_settings:
+            case R.id.action_settings:
                 i = new Intent(this, FgpstPreferenceActivity.class);
                 startActivity(i);
                 break;

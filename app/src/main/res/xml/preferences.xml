@@ -1,6 +1,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
+        android:key="URL"
+        android:inputType="textUri"
+        android:title="@string/text_legend_url_0"
+        android:summary="@string/text_legend_url_1"
+        android:defaultValue="@string/hint_url" />
+
+    <EditTextPreference
         android:key="pref_gps_updates"
         android:inputType="number"
         android:title="@string/pref_gps_updates"
