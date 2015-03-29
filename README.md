@@ -14,18 +14,14 @@ See also similar app to http://sourceforge.net/projects/gpsmapper/
     android GPS -> google app engine web backend -> html and js map
 
 
-## My modification of Self-Hosted-GPS-Tracker
+## My modification to Self-Hosted-GPS-Tracker
 
 * POST json
-* added timestamp
-* url validation
+* added timestamp, speed, altitude
+* preferences validation
 * class names changed
 * android studio project structure
 
 
 ## TODO
-* move url from main screen to settings
-* add configurable params field to settings form for device_id, user_token
-  and more
-* add altitude
 * if network is not available save position to local DB and send it later
