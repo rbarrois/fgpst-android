@@ -30,6 +30,8 @@ public class FgpstService extends IntentService implements LocationListener {
 
     private SharedPreferences preferences;
     private String urlText;
+    private String user_key;
+    private String device_key;
     private LocationManager locationManager;
     private int pref_gps_updates;
     private long latestUpdate;
@@ -57,6 +59,10 @@ public class FgpstService extends IntentService implements LocationListener {
         editor.commit();
         pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "30")); // seconds
         pref_max_run_time = Integer.parseInt(preferences.getString("pref_max_run_time", "24")); // hours
+        user_key = preferences.getString("user_key", "");
+        device_key = preferences.getString("device_key", "");
+
+
         urlText = preferences.getString("URL", "");  // hint_url
         if (urlText.contains("?")) {
             urlText = urlText + "&";
@@ -153,6 +159,8 @@ public class FgpstService extends IntentService implements LocationListener {
             json.put("speed", String.format("%.6f", speed));
             json.put("bearing", String.format("%.6f", bearing));
             json.put("timestamp", timestampStr);
+            json.put("user_key", user_key);
+            json.put("device_key", device_key);
         } catch (org.json.JSONException exc){
             Log.d(MY_TAG, "error generating json: " + exc.toString());
         }

@@ -2,6 +2,7 @@ package com.pawciobiel.fgpst;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import android.support.v7.app.ActionBar;
 import android.app.Activity;
@@ -38,8 +39,7 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
     private ConnectivityManager connectivityManager;
 
     SharedPreferences preferences;
-    private EditText edit_url;
-    private TextView text_legend_url_1;
+    private TextView text_pref_status;
     private TextView text_gps_status;
     private TextView text_network_status;
     private ToggleButton button_toggle;
@@ -55,6 +55,9 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
             if (action.equals(CONNECTIVITY)) {
                 updateNetworkStatus();
             }
+            if (action.equals(FgpstPreferenceActivity.PREFERENCES)) {
+                updatePrefStatus();
+            }
         }
     };
 
@@ -67,21 +70,18 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
         if (!actionBar.isShowing())
             actionBar.show();
 
+        text_pref_status = (TextView) findViewById(R.id.text_pref_status);
         text_gps_status = (TextView) findViewById(R.id.text_gps_status);
         text_network_status = (TextView) findViewById(R.id.text_network_status);
         button_toggle = (ToggleButton) findViewById(R.id.button_toggle);
         text_running_since = (TextView) findViewById(R.id.text_running_since);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.contains("URL") &&
-                (Patterns.WEB_URL.matcher(preferences.getString("URL", ""))
-                        .matches())) {
-            button_toggle.setEnabled(true);
-        } else {
-            button_toggle.setEnabled(false);
-            text_gps_status.setText(getString(R.string.text_legend_url_invalid));
-            text_gps_status.setTextColor(Color.RED);
-        }
+        //PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+
+        updatePrefStatus();
+
 
         registerReceiver(receiver, new IntentFilter(FgpstService.NOTIFICATION));
         registerReceiver(receiver, new IntentFilter(FgpstActivity.CONNECTIVITY));
@@ -106,6 +106,8 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
         updateNetworkStatus();
 
         updateServiceStatus();
+
+        updatePrefStatus();
     }
 
     @Override
@@ -171,6 +173,29 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
     }
 
     /* ----------- utility methods -------------- */
+
+    private void updatePrefStatus() {
+        if (!PrefValidator.isPrefUrlValid(preferences)) {
+            button_toggle.setEnabled(false);
+            text_pref_status.setText(getString(R.string.text_legend_url_invalid));
+            text_pref_status.setTextColor(Color.RED);
+            return;
+        }
+        if (!PrefValidator.isPrefUserKeyValid(preferences)) {
+            button_toggle.setEnabled(false);
+            text_pref_status.setText(getString(R.string.pref_user_key_invalid));
+            text_pref_status.setTextColor(Color.RED);
+            return;
+        }
+        if (!PrefValidator.isPrefDeviceKeyValid(preferences)) {
+            button_toggle.setEnabled(false);
+            text_pref_status.setText(getString(R.string.pref_device_key_invalid));
+            text_pref_status.setTextColor(Color.RED);
+            return;
+        }
+        button_toggle.setEnabled(true);
+    }
+
     private void updateServiceStatus() {
 
         if (FgpstService.isRunning) {

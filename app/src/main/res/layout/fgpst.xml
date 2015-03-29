@@ -7,12 +7,20 @@
 
 
     <TextView
+        android:id="@+id/text_pref_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/text_pref_status" />
+
+    <TextView
         android:id="@+id/text_network_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_legend_url_0"
+        android:layout_below="@+id/text_pref_status"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="45dp"
         android:text="@string/text_network_status" />
 
     <TextView

@@ -4,8 +4,22 @@
         android:key="URL"
         android:inputType="textUri"
         android:title="@string/text_legend_url_0"
-        android:summary="@string/text_legend_url_1"
-        android:defaultValue="@string/hint_url" />
+        android:summary="(default https://free-gps-tracker.appspot.com/fgpst/tracker/positions/ )"
+        android:defaultValue="https://free-gps-tracker.appspot.com/fgpst/tracker/positions/" />
+
+    <EditTextPreference
+        android:key="user_key"
+        android:inputType="text"
+        android:title="@string/pref_user_key"
+        android:summary="@string/pref_user_key_summary"
+        android:defaultValue="" />
+
+    <EditTextPreference
+        android:key="device_key"
+        android:inputType="text"
+        android:title="@string/pref_device_key"
+        android:summary="@string/pref_device_key_summary"
+        android:defaultValue="" />
 
     <EditTextPreference
         android:key="pref_gps_updates"
