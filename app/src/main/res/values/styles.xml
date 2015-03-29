@@ -1,0 +1,7 @@
+<resources>
+    <color name="white_opaque">#FFFFFFFF</color>
+    <color name="pitch_black">#FF000000</color>
+    <color name="nice_blue">#56ACDB</color>
+    <color name="cold_blue">#F2EEFF</color>
+    <color name="dark_grey_blue">#485B69</color>
+</resources>

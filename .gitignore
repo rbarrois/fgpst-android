@@ -12,13 +12,30 @@
 bin/
 gen/
 
-# Local configuration file (sdk path, etc)
-local.properties
-
 # Eclipse project files
 .classpath
 .project
 .settings
+.metadata/
+proguard/
 
 # this is unrelated to the project
 /libs/android-support-v4.jar
+/gradle/wrapper/gradle-wrapper.jar
+
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+build/
+
+
+# Windows thumbnail db
+Thumbs.db
+#
+# OSX files
+.DS_Store
+
+*~
+*.swp
+

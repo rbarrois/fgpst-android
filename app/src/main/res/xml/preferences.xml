@@ -1,0 +1,38 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="URL"
+        android:inputType="textUri"
+        android:title="@string/text_legend_url_0"
+        android:summary="(default https://free-gps-tracker.appspot.com/fgpst/tracker/positions/ )"
+        android:defaultValue="https://free-gps-tracker.appspot.com/fgpst/tracker/positions/" />
+
+    <EditTextPreference
+        android:key="user_key"
+        android:inputType="text"
+        android:title="@string/pref_user_key"
+        android:summary="@string/pref_user_key_summary"
+        android:defaultValue="" />
+
+    <EditTextPreference
+        android:key="device_key"
+        android:inputType="text"
+        android:title="@string/pref_device_key"
+        android:summary="@string/pref_device_key_summary"
+        android:defaultValue="" />
+
+    <EditTextPreference
+        android:key="pref_gps_updates"
+        android:inputType="number"
+        android:title="@string/pref_gps_updates"
+        android:summary="@string/pref_gps_updates_summary"
+        android:defaultValue="60" />
+
+    <EditTextPreference
+        android:key="pref_max_run_time"
+        android:inputType="number"
+        android:title="@string/pref_max_run_time"
+        android:summary="@string/pref_max_run_time_summary"
+        android:defaultValue="8" />
+
+</PreferenceScreen>

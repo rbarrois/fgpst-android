@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="?attr/actionBarSize"
+                tools:context=".FgpstActivity" >
+
+
+    <TextView
+        android:id="@+id/text_pref_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/text_pref_status" />
+
+    <TextView
+        android:id="@+id/text_network_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_pref_status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:text="@string/text_network_status" />
+
+    <TextView
+        android:id="@+id/text_gps_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_network_status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:text="@string/text_gps_status" />
+
+    <ToggleButton
+        android:id="@+id/button_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_gps_status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:checked="false"
+        android:height="60sp"
+        android:onClick="onToggleClicked"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textOff="@string/button_toggle"
+        android:textOn="@string/button_toggle"
+        android:textStyle="bold"
+        android:width="150sp" />
+
+    <TextView
+        android:id="@+id/text_running_since"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_toggle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_running_since"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/desc_logo"
+        android:src="@drawable/ic_launcher" />
+
+</RelativeLayout>
