@@ -35,7 +35,15 @@ public class FgpstService extends IntentService implements LocationListener {
     private LocationManager locationManager;
     private int pref_gps_updates;
     private long latestUpdate;
+    private Location currentLocation;
     private int pref_max_run_time;
+
+    public Location getCurrentLocation(){
+        return currentLocation;
+    }
+    public long getLatestUpdate(){
+        return latestUpdate;
+    }
 
     public FgpstService() {
         super("FgpstService");
@@ -137,21 +145,28 @@ public class FgpstService extends IntentService implements LocationListener {
 
         if ((System.currentTimeMillis() - latestUpdate) < pref_gps_updates * 1000) {
             return;
-        } else {
-            latestUpdate = System.currentTimeMillis();
         }
 
-        JSONObject json = new JSONObject();
-        String timestampStr = String.format("%tFT%<tT.%<tLZ",
-                Calendar.getInstance(TimeZone.getTimeZone("Z")));
-        // FIXME: I should use location.getTime()
-
+        latestUpdate = System.currentTimeMillis();
+        currentLocation = location;
         double lat = location.getLatitude();
         double lon = location.getLongitude();
         double alt = location.getAltitude();
         float speed = location.getSpeed();
         float bearing = location.getBearing();
 
+        // FIXME: I should use location.getTime()
+        String timestampStr = String.format("%tFT%<tT.%<tLZ",
+                Calendar.getInstance(TimeZone.getTimeZone("Z")));
+
+
+        // TODO: update app with last position latestUpdate
+        //latTextView.setText(String.format("%.6f", lat));
+        //lonTextView.setText(String.format("%.6f", lon));
+        //latestUpdateTimeTextView.setText(timestampStr);
+
+
+        JSONObject json = new JSONObject();
         try {
             json.put("lat", String.format("%.6f", lat));
             json.put("lon", String.format("%.6f", lon));
@@ -161,11 +176,15 @@ public class FgpstService extends IntentService implements LocationListener {
             json.put("timestamp", timestampStr);
             json.put("user_key", user_key);
             json.put("device_key", device_key);
+            executeRequest(urlText, json);
         } catch (org.json.JSONException exc){
             Log.d(MY_TAG, "error generating json: " + exc.toString());
         }
 
-        // TODO: update app with last position latestUpdate
+
+    }
+
+    public void executeRequest(String urlText, JSONObject json){
         new FgpstServiceRequest().execute(urlText, json.toString());
     }
 
