@@ -13,17 +13,59 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
+    }
+    productFlavors {
+        demo {
+            applicationId "com.pawciobiel.fgpst.test"
+            versionName "1.0-test"
+            minSdkVersion 8
+            targetSdkVersion 15
+            versionCode 1
+        }
+        full {
+            applicationId "com.pawciobiel.fgpst.full"
+            versionName "1.0-full"
+            minSdkVersion 8
+            targetSdkVersion 15
+            versionCode 1
+        }
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            //assets.srcDirs = ['assets']
+        }
+        test {
+            java.srcDirs = ['src/androidTest/java']
+            resources.srcDirs = ['src/androidTest/res']
+        }
+        androidTest.setRoot('androidTest')
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: ['*.jar'],
+            dir: 'libs'
+    )
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
-    compile 'org.mockito:mockito-core:1.+'
-    compile 'com.google.dexmaker:dexmaker:1.+'
-    compile 'com.google.dexmaker:dexmaker-mockito:1.+'
+
+    testCompile 'junit:junit:4.12'
+    testCompile "org.assertj:assertj-core:1.7.0"
+    testCompile 'org.mockito:mockito-core:1.+'
+    testCompile 'com.google.dexmaker:dexmaker:1.+'
+    testCompile 'com.google.dexmaker:dexmaker-mockito:1.+'
+    testCompile 'org.robolectric:robolectric:3.+'
 }
