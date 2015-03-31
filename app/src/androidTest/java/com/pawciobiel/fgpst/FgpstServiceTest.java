@@ -2,10 +2,6 @@ package com.pawciobiel.fgpst;
 
 
 
-import android.location.Criteria;
-import android.os.IBinder;
-import android.test.ServiceTestCase;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
@@ -19,7 +15,10 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoAnnotations.*;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
@@ -28,48 +27,52 @@ import org.robolectric.annotation.Config;
 
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk = 15)
+@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk = 21,
+        constants=BuildConfig.class)
 public class FgpstServiceTest {
-    private LocationManager locationManager;
+
+    @Mock
+    public LocationManager mLocationManager;
+
+    @Mock
+    public FgpstServiceRequest mFgpstServiceRequest;
+
+    @InjectMocks
+    public FgpstService srv = Robolectric.setupService(FgpstService.class);
+
     public static final String TEST_GPS_PROVIDER = "FgpstServiceTest";
+    public FgpstActivity activity;
 
     @Before
-    protected void setUp() throws Exception {
-        FgpstActivity activity = Robolectric.buildActivity(FgpstActivity.class)
-                .create().get();
+    public void initMocks() {
+        System.setProperty("dexmaker.dexcache", "/tmp");
+        //System.setProperty("dexmaker.dexcache", getInstrumentation()
+        //        .getTargetContext().getCacheDir().getPath());
+        MockitoAnnotations.initMocks(this);
+    }
 
-        locationManager = (LocationManager)
+    @Before
+    public void setUp() throws Exception {
+
+
+        /*(mLocationManager = (LocationManager)
                 getContext().getSystemService(Context.LOCATION_SERVICE);
-        //locationManager.addTestProvider(TEST_GPS_PROVIDER, false, false,
+        //mLocationManager.addTestProvider(TEST_GPS_PROVIDER, false, false,
         // false,
         //        false, false, false, false, Criteria.POWER_HIGH,
         //        Criteria.ACCURACY_FINE);
-        locationManager.setTestProviderEnabled(TEST_GPS_PROVIDER, true);
-
+        mLocationManager.setTestProviderEnabled(TEST_GPS_PROVIDER, true);
+        */
     }
 
-    @Before
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        if (locationManager != null)
-            locationManager.removeTestProvider(TEST_GPS_PROVIDER);
-    }
-
-    @Test
-    public void checkActivityNotNull() throws Exception {
-        assertNotNull(activity);
-    }
 
     @Test
     public void testOnLocationChanged() {
 
         Location testLocation = new Location(TEST_GPS_PROVIDER);
-        testLocation.setLatitude(10.0);
-        testLocation.setLongitude(20.0);
-        locationManager.setTestProviderLocation(TEST_GPS_PROVIDER, testLocation);
-
-        FgpstService srv = Robolectric.setupService(FgpstService.class);
-
+        testLocation.setLatitude(new Double("10.123456789"));
+        testLocation.setLongitude(new Double("20.987654321"));
+        mLocationManager.setTestProviderLocation(TEST_GPS_PROVIDER, testLocation);
 
         //Mockito.doReturn("This is the new value!").when(reqMock).execute();
 
@@ -84,14 +87,18 @@ public class FgpstServiceTest {
                 spy.getCurrentLocation());
 
         //Mockito.doReturn("foo").when(spy).executeRequest(1234);
-        String url = "";
-        JSONObject json = new JSONObject();
+        String url = "https://free-gps-tracker.appspot" +
+                ".com/fgpst/tracker/positions/";
+        JSONObject tjson = new JSONObject();
         try {
-            json.put("ass", "asdd");
+            tjson.put("aaa", "bbb");
         } catch (JSONException exc) {
 
         }
-        Mockito.verify(spy, Mockito.times(1)).executeRequest(url, json);
+        Mockito.verify(spy, Mockito.times(1)).executeRequest(Mockito.eq(url),
+                Mockito.<JSONObject>any());
+                //Mockito.<JSONObject>eq(tjson));
 
+        // TODO: test buildPositionMsgFromCurrLocation if json/string is correct
     }
 }

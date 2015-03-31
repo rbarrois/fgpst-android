@@ -2,6 +2,7 @@ package com.pawciobiel.fgpst;
 
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.text.DecimalFormat;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -71,12 +72,8 @@ public class FgpstService extends IntentService implements LocationListener {
         device_key = preferences.getString("device_key", "");
 
 
-        urlText = preferences.getString("URL", "");  // hint_url
-        if (urlText.contains("?")) {
-            urlText = urlText + "&";
-        } else {
-            urlText = urlText + "?";
-        }
+        String defaultUrl = this.getResources().getString(R.string.hint_url);
+        urlText = preferences.getString("URL", defaultUrl);
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 pref_gps_updates * 1000, 1, this);
@@ -137,7 +134,49 @@ public class FgpstService extends IntentService implements LocationListener {
         sendBroadcast(intent);
     }
 
+    public static double getDoubleValue(String value,int digit){
+        if(value==null){
+            value="0";
+        }
+        double i=0;
+        try {
+            DecimalFormat digitformat = new DecimalFormat("#.######");
+            digitformat.setMaximumFractionDigits(digit);
+            return Double.valueOf(digitformat.format(Double.parseDouble(value)));
+
+        } catch (NumberFormatException numberFormatExp) {
+            return i;
+        }
+    }
+
 	/* -------------- GPS stuff -------------- */
+
+    public JSONObject buildPositionMsgFromCurrLocation(){
+        double lat = currentLocation.getLatitude();
+        double lon = currentLocation.getLongitude();
+        double alt = currentLocation.getAltitude();
+        float speed = currentLocation.getSpeed();
+        float bearing = currentLocation.getBearing();
+
+        // FIXME: I should use location.getTime()
+        String timestampStr = String.format("%tFT%<tT.%<tLZ",
+                Calendar.getInstance(TimeZone.getTimeZone("Z")));
+        JSONObject json = new JSONObject();
+        DecimalFormat df = new DecimalFormat("#0.######");
+        try {
+            json.put("lat", getDoubleValue(String.valueOf(lat), 6));
+            json.put("lon", getDoubleValue(String.valueOf(lon), 6));
+            json.put("alt", alt);
+            json.put("speed", speed);
+            json.put("bearing", bearing);
+            json.put("timestamp", timestampStr);
+            json.put("user_key", user_key);
+            json.put("device_key", device_key);
+        } catch (org.json.JSONException exc){
+            Log.d(MY_TAG, "error generating json: " + exc.toString());
+        }
+        return json;
+    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -149,15 +188,6 @@ public class FgpstService extends IntentService implements LocationListener {
 
         latestUpdate = System.currentTimeMillis();
         currentLocation = location;
-        double lat = location.getLatitude();
-        double lon = location.getLongitude();
-        double alt = location.getAltitude();
-        float speed = location.getSpeed();
-        float bearing = location.getBearing();
-
-        // FIXME: I should use location.getTime()
-        String timestampStr = String.format("%tFT%<tT.%<tLZ",
-                Calendar.getInstance(TimeZone.getTimeZone("Z")));
 
 
         // TODO: update app with last position latestUpdate
@@ -166,20 +196,8 @@ public class FgpstService extends IntentService implements LocationListener {
         //latestUpdateTimeTextView.setText(timestampStr);
 
 
-        JSONObject json = new JSONObject();
-        try {
-            json.put("lat", String.format("%.6f", lat));
-            json.put("lon", String.format("%.6f", lon));
-            json.put("alt", String.format("%.6f", alt));
-            json.put("speed", String.format("%.6f", speed));
-            json.put("bearing", String.format("%.6f", bearing));
-            json.put("timestamp", timestampStr);
-            json.put("user_key", user_key);
-            json.put("device_key", device_key);
-            executeRequest(urlText, json);
-        } catch (org.json.JSONException exc){
-            Log.d(MY_TAG, "error generating json: " + exc.toString());
-        }
+        JSONObject json = buildPositionMsgFromCurrLocation();
+        executeRequest(urlText, json);
 
 
     }
