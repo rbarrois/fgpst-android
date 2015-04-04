@@ -31,7 +31,6 @@ public class FgpstService extends IntentService implements LocationListener {
 
     private SharedPreferences preferences;
     private String urlText;
-    private String user_key;
     private String device_key;
     private LocationManager locationManager;
     private int pref_gps_updates;
@@ -68,11 +67,11 @@ public class FgpstService extends IntentService implements LocationListener {
         editor.commit();
         pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "30")); // seconds
         pref_max_run_time = Integer.parseInt(preferences.getString("pref_max_run_time", "24")); // hours
-        user_key = preferences.getString("user_key", "");
         device_key = preferences.getString("device_key", "");
 
 
-        String defaultUrl = this.getResources().getString(R.string.hint_url);
+        String defaultUrl = this.getResources().getString(R.string
+                .pref_url_default);
         urlText = preferences.getString("URL", defaultUrl);
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -119,6 +118,7 @@ public class FgpstService extends IntentService implements LocationListener {
     public void onDestroy() {
         // (user clicked the stop button, or max run time has been reached)
         Log.d(MY_TAG, "in onDestroy, stop listening to the GPS");
+        // FIXME: device_key, json
         new FgpstServiceRequest().execute(urlText + "tracker=stop");
 
         locationManager.removeUpdates(this);
@@ -134,7 +134,7 @@ public class FgpstService extends IntentService implements LocationListener {
         sendBroadcast(intent);
     }
 
-    public static double getDoubleValue(String value,int digit){
+    public static double getDoubleValue(String value, int digit){
         if(value==null){
             value="0";
         }
@@ -162,7 +162,6 @@ public class FgpstService extends IntentService implements LocationListener {
         String timestampStr = String.format("%tFT%<tT.%<tLZ",
                 Calendar.getInstance(TimeZone.getTimeZone("Z")));
         JSONObject json = new JSONObject();
-        DecimalFormat df = new DecimalFormat("#0.######");
         try {
             json.put("lat", getDoubleValue(String.valueOf(lat), 6));
             json.put("lon", getDoubleValue(String.valueOf(lon), 6));
@@ -170,7 +169,6 @@ public class FgpstService extends IntentService implements LocationListener {
             json.put("speed", speed);
             json.put("bearing", bearing);
             json.put("timestamp", timestampStr);
-            json.put("user_key", user_key);
             json.put("device_key", device_key);
         } catch (org.json.JSONException exc){
             Log.d(MY_TAG, "error generating json: " + exc.toString());
@@ -181,6 +179,12 @@ public class FgpstService extends IntentService implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         Log.d(MY_TAG, "in onLocationChanged, latestUpdate == " + latestUpdate);
+
+        if (!PrefValidator.isDeviceKeyValid(device_key)){
+            Intent i = new Intent(FgpstPreferenceActivity.PREFERENCES);
+            sendBroadcast(i);
+            return;
+        }
 
         if ((System.currentTimeMillis() - latestUpdate) < pref_gps_updates * 1000) {
             return;

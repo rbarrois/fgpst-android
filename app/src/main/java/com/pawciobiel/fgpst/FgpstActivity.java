@@ -77,7 +77,7 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
         text_running_since = (TextView) findViewById(R.id.text_running_since);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 
         updatePrefStatus();
@@ -181,18 +181,13 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
             text_pref_status.setTextColor(Color.RED);
             return;
         }
-        if (!PrefValidator.isPrefUserKeyValid(preferences)) {
-            button_toggle.setEnabled(false);
-            text_pref_status.setText(getString(R.string.pref_user_key_invalid));
-            text_pref_status.setTextColor(Color.RED);
-            return;
-        }
         if (!PrefValidator.isPrefDeviceKeyValid(preferences)) {
             button_toggle.setEnabled(false);
             text_pref_status.setText(getString(R.string.pref_device_key_invalid));
             text_pref_status.setTextColor(Color.RED);
             return;
         }
+        text_pref_status.setText("");
         button_toggle.setEnabled(true);
     }
 

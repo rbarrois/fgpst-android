@@ -87,14 +87,14 @@ public class FgpstServiceTest {
                 spy.getCurrentLocation());
 
         //Mockito.doReturn("foo").when(spy).executeRequest(1234);
-        String url = "https://free-gps-tracker.appspot" +
-                ".com/fgpst/tracker/positions/";
+        String url = "https://free-gps-tracker.appspot.com/pr";
         JSONObject tjson = new JSONObject();
         try {
             tjson.put("aaa", "bbb");
         } catch (JSONException exc) {
 
         }
+        // {"lat":10.123457,"lon":20.987654,"alt":0,"speed":0,"bearing":0,"timestamp":"2015-04-04T12:36:26.484Z","device_key":""}
         Mockito.verify(spy, Mockito.times(1)).executeRequest(Mockito.eq(url),
                 Mockito.<JSONObject>any());
                 //Mockito.<JSONObject>eq(tjson));

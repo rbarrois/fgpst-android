@@ -46,28 +46,7 @@ public class FgpstPreferenceActivity extends PreferenceActivity {
                             getString(R.string.toast_prefs_restart),
                             Toast.LENGTH_LONG).show();
                 }
-                return true;
-            }
-        });
-
-        pref = findPreference("user_key");
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                SharedPreferences preferences = PreferenceManager
-                        .getDefaultSharedPreferences(getApplicationContext());
-                String oldValue = preferences.getString("user_key", "");
-                if (!PrefValidator.isUserKeyValid((String)newValue)) {
-                    Toast.makeText(getApplicationContext(),
-                            getString(R.string.pref_user_key_invalid),
-                            Toast.LENGTH_LONG).show();
-                    return false;
-                } else if (FgpstService.isRunning
-                        && (newValue.toString() != oldValue)) {
-                    Toast.makeText(getApplicationContext(),
-                            getString(R.string.toast_prefs_restart),
-                            Toast.LENGTH_LONG).show();
-                }
+                sendBroadcastPrefChanged();
                 return true;
             }
         });
@@ -89,6 +68,7 @@ public class FgpstPreferenceActivity extends PreferenceActivity {
                             getString(R.string.toast_prefs_restart),
                             Toast.LENGTH_LONG).show();
                 }
+                sendBroadcastPrefChanged();
                 return true;
             }
         });
@@ -140,5 +120,10 @@ public class FgpstPreferenceActivity extends PreferenceActivity {
                 return true;
             }
         });
+    }
+
+    private void sendBroadcastPrefChanged() {
+        Intent i = new Intent(FgpstPreferenceActivity.PREFERENCES);
+        sendBroadcast(i);
     }
 }

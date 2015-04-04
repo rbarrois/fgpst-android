@@ -5,28 +5,27 @@
 
     <string name="desc_logo">Logo</string>
 
-    <string name="hint_url">https://free-gps-tracker.appspot.com/fgpst/tracker/positions/</string>
+    <string name="pref_url_default">https://free-gps-tracker.appspot.com/pr</string>
+    <string name="hint_url">https://free-gps-tracker.appspot.com/pr</string>
 
     <string name="invalid_number">Invalid number</string>
 
     <string name="action_settings">settings</string>
 
-    <string name="pref_user_key">User key</string>
-    <string name="pref_user_key_summary">Auto generated key for user from
-        free-gps-tracker website.</string>
-    <string name="pref_user_key_invalid">Invalid user key</string>
-
     <string name="pref_device_key">Device key</string>
     <string name="pref_device_key_summary">Auto generated key for
-        device. (configure device on free-gps-tracker website)</string>
-    <string name="pref_device_key_invalid">Invalid device key</string>
+        your device. (configure device on free-gps-tracker website)</string>
+    <string name="pref_device_key_invalid">Invalid device key!</string>
 
     <string name="pref_gps_updates">GPS Updates (seconds)</string>
-    <string name="pref_gps_updates_summary">Update GPS position approximately every… (30 seconds minimum)</string>
+    <integer name="pref_gps_updates_default">60</integer>
+    <string name="pref_gps_updates_summary">Update GPS position approximately
+        every… (60 seconds minimum)</string>
     <string name="pref_gps_updates_too_low">Sorry, this value is too low</string>
 
     <string name="pref_max_run_time">Max run time (hours)</string>
-    <string name="pref_max_run_time_summary">(defaults to 8 hours)</string>
+    <integer name="pref_max_run_time_default">16</integer>
+    <string name="pref_max_run_time_summary">(defaults to 16 hours)</string>
     <string name="pref_max_run_time_too_low">Sorry, this value is lower than GPS updates</string>
 
     <string name="text_legend_url_0">Send positions to :</string>

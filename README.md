@@ -21,7 +21,12 @@ See also similar app to http://sourceforge.net/projects/gpsmapper/
 * preferences validation
 * class names changed
 * android studio project structure
+* send positions to free-gps-tracker.appspot.com by default
 
 
 ## TODO
 * if network is not available save position to local DB and send it later
+* refactor buildPositionMsgFromCurrLocation to a command class?
+* fixup commands tracker start, tracker stop
+* update screen with latest position
+
