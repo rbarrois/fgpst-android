@@ -154,7 +154,7 @@ public class FgpstService extends IntentService implements LocationListener {
     public JSONObject buildPositionMsgFromCurrLocation(){
         double lat = currentLocation.getLatitude();
         double lon = currentLocation.getLongitude();
-        double alt = currentLocation.getAltitude();
+        double altitude = currentLocation.getAltitude();
         float speed = currentLocation.getSpeed();
         float bearing = currentLocation.getBearing();
 
@@ -165,7 +165,7 @@ public class FgpstService extends IntentService implements LocationListener {
         try {
             json.put("lat", getDoubleValue(String.valueOf(lat), 6));
             json.put("lon", getDoubleValue(String.valueOf(lon), 6));
-            json.put("alt", alt);
+            json.put("altitude", altitude);
             json.put("speed", speed);
             json.put("bearing", bearing);
             json.put("timestamp", timestampStr);

@@ -98,7 +98,7 @@ public class FgpstServiceTest {
         Mockito.verify(spy, Mockito.times(1)).executeRequest(Mockito.eq(url),
                 Mockito.<JSONObject>any());
                 //Mockito.<JSONObject>eq(tjson));
-
+        // !!! altitude
         // TODO: test buildPositionMsgFromCurrLocation if json/string is correct
     }
 }
