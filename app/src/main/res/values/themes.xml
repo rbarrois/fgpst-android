@@ -2,32 +2,22 @@
 <resources>
 
     <style name="FgpstTheme"
-           parent="@style/Theme.AppCompat.Light">
-
-        <item name="android:background">@color/cold_blue</item>
-        <item name="android:actionBarStyle">@style/FgpstActionBar</item>
-
-        <!-- Support library compatibility -->
-        <item name="background">@color/cold_blue</item>
-        <item name="actionBarStyle">@style/FgpstActionBar</item>
+           parent="android:Theme.DeviceDefault.Light">
 
     </style>
 
 
     <!-- ActionBar styles -->
     <style name="FgpstActionBar"
-           parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+           parent="@android:style/Widget.DeviceDefault.Light.ActionBar.Solid">
         <item name="android:titleTextStyle">@style/FgpstActionBarTitleText</item>
         <item name="android:background">@color/dark_grey_blue</item>
 
-        <!-- Support library compatibility -->
-        <item name="titleTextStyle">@style/FgpstActionBarTitleText</item>
-        <item name="background">@color/dark_grey_blue</item>
     </style>
 
     <!-- ActionBar title text -->
     <style name="FgpstActionBarTitleText"
-           parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+           parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
         <item name="android:textColor">@color/dark_grey_blue</item>
 
     </style>

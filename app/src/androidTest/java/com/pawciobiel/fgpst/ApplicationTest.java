@@ -26,7 +26,7 @@ import org.robolectric.annotation.Config;
 
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk = 21,
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21,
         constants=BuildConfig.class)
 public class ApplicationTest {
 

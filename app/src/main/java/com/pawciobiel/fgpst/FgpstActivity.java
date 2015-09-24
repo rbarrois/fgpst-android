@@ -4,9 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-import android.support.v7.app.ActionBar;
+import android.app.ActionBar;
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +30,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.util.Patterns;
 
-public class FgpstActivity extends ActionBarActivity implements LocationListener {
+public class FgpstActivity extends Activity implements LocationListener {
 
     private final static String CONNECTIVITY = "android.net.conn.CONNECTIVITY_CHANGE";
 
@@ -66,7 +65,7 @@ public class FgpstActivity extends ActionBarActivity implements LocationListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fgpst);
 
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         if (!actionBar.isShowing())
             actionBar.show();
 
