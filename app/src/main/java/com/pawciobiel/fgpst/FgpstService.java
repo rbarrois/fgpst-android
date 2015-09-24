@@ -65,8 +65,8 @@ public class FgpstService extends IntentService implements LocationListener {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong("stoppedOn", 0);
         editor.commit();
-        pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "30")); // seconds
-        pref_max_run_time = Integer.parseInt(preferences.getString("pref_max_run_time", "24")); // hours
+        pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "5")); // seconds
+        pref_max_run_time = Integer.parseInt(preferences.getString("pref_max_run_time", "0")); // hours
         device_key = preferences.getString("device_key", "");
 
 
@@ -75,7 +75,9 @@ public class FgpstService extends IntentService implements LocationListener {
         urlText = preferences.getString("URL", defaultUrl);
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                pref_gps_updates * 1000, 1, this);
+                pref_gps_updates * 1000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                pref_gps_updates * 1000, 0, this);
     }
 
     @Override
@@ -105,8 +107,7 @@ public class FgpstService extends IntentService implements LocationListener {
         notification.setLatestEventInfo(this, getText(R.string.app_name), getText(R.string.toast_service_running), pendingIntent);
         startForeground(R.id.logo, notification);
 
-        long endTime = System.currentTimeMillis() + pref_max_run_time * 60 * 60 * 1000;
-        while (System.currentTimeMillis() < endTime) {
+        while (true) {
             try {
                 Thread.sleep(60 * 1000); // note: when device is sleeping, it may last up to 5 minutes or more
             } catch (Exception e) {

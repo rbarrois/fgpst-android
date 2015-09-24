@@ -86,7 +86,7 @@ public class FgpstPreferenceActivity extends PreferenceActivity {
                     Toast.makeText(getApplicationContext(),
                             getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
                     return false;
-                } else if (Integer.parseInt(newValue.toString()) < 30) { // user has been warned
+                } else if (Integer.parseInt(newValue.toString()) < 2) { // user has been warned
                     Toast.makeText(getApplicationContext(), getString(R.string.pref_gps_updates_too_low), Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (FgpstService.isRunning
