@@ -17,9 +17,9 @@
     <string name="pref_vehicle_id_invalid">Invalid Vehicle ID!</string>
 
     <string name="pref_gps_updates">GPS Updates (seconds)</string>
-    <integer name="pref_gps_updates_default">60</integer>
+    <integer name="pref_gps_updates_default">5</integer>
     <string name="pref_gps_updates_summary">Update GPS position approximately
-        every… (60 seconds minimum)</string>
+        every… (2 seconds minimum)</string>
     <string name="pref_gps_updates_too_low">Sorry, this value is too low</string>
 
     <string name="text_legend_url_0">Send positions to :</string>
