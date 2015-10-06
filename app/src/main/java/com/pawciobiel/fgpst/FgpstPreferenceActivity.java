@@ -96,30 +96,6 @@ public class FgpstPreferenceActivity extends PreferenceActivity {
                 return true;
             }
         });
-
-        pref = findPreference("pref_max_run_time");
-        pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) { // hours
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                int prefGpsUpdates = Integer.parseInt(preferences.getString
-                        ("pref_gps_updates", "0")); // seconds
-                int oldValue = Integer.parseInt(preferences.getString("pref_max_run_time", "0"));
-                if (newValue == null
-                        || newValue.toString().length() == 0
-                        || !Pattern.matches("^\\d{1,5}$", newValue.toString())) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
-                    return false;
-                } else if (Integer.parseInt(newValue.toString()) * 3600 < prefGpsUpdates) { // would not make sense...
-                    Toast.makeText(getApplicationContext(), getString(R.string.pref_max_run_time_too_low), Toast.LENGTH_LONG).show();
-                    return false;
-                } else if (FgpstService.isRunning
-                        && Integer.parseInt(newValue.toString()) != oldValue) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.toast_prefs_restart), Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            }
-        });
     }
 
     private void sendBroadcastPrefChanged() {

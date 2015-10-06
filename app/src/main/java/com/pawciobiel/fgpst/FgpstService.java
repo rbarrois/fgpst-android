@@ -36,7 +36,6 @@ public class FgpstService extends IntentService implements LocationListener {
     private int pref_gps_updates;
     private long latestUpdate;
     private Location currentLocation;
-    private int pref_max_run_time;
 
     public Location getCurrentLocation(){
         return currentLocation;
@@ -66,7 +65,6 @@ public class FgpstService extends IntentService implements LocationListener {
         editor.putLong("stoppedOn", 0);
         editor.commit();
         pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "5")); // seconds
-        pref_max_run_time = Integer.parseInt(preferences.getString("pref_max_run_time", "0")); // hours
         vehicle_id = preferences.getString("vehicle_id", "");
 
 

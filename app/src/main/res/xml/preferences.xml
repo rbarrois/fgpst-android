@@ -19,13 +19,6 @@
         android:inputType="number"
         android:title="@string/pref_gps_updates"
         android:summary="@string/pref_gps_updates_summary"
-        android:defaultValue="60" />
-
-    <EditTextPreference
-        android:key="pref_max_run_time"
-        android:inputType="number"
-        android:title="@string/pref_max_run_time"
-        android:summary="@string/pref_max_run_time_summary"
-        android:defaultValue="16" />
+        android:defaultValue="5" />
 
 </PreferenceScreen>
