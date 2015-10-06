@@ -94,7 +94,7 @@ public class FgpstServiceTest {
         } catch (JSONException exc) {
 
         }
-        // {"lat":10.123457,"lon":20.987654,"alt":0,"speed":0,"bearing":0,"timestamp":"2015-04-04T12:36:26.484Z","device_key":""}
+        // {"lat":10.123457,"lon":20.987654,"alt":0,"speed":0,"bearing":0,"timestamp":"2015-04-04T12:36:26.484Z","vehicle_id":""}
         Mockito.verify(spy, Mockito.times(1)).executeRequest(Mockito.eq(url),
                 Mockito.<JSONObject>any());
                 //Mockito.<JSONObject>eq(tjson));

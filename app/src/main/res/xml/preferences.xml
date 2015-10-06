@@ -8,10 +8,10 @@
         android:defaultValue="https://free-gps-tracker.appspot.com/pr" />
 
     <EditTextPreference
-        android:key="device_key"
+        android:key="vehicle_id"
         android:inputType="text"
-        android:title="@string/pref_device_key"
-        android:summary="@string/pref_device_key_summary"
+        android:title="@string/pref_vehicle_id"
+        android:summary="@string/pref_vehicle_id_summary"
         android:defaultValue="" />
 
     <EditTextPreference

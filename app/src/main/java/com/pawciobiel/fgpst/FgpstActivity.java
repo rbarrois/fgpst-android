@@ -180,9 +180,9 @@ public class FgpstActivity extends Activity implements LocationListener {
             text_pref_status.setTextColor(Color.RED);
             return;
         }
-        if (!PrefValidator.isPrefDeviceKeyValid(preferences)) {
+        if (!PrefValidator.isPrefVehicleIDValid(preferences)) {
             button_toggle.setEnabled(false);
-            text_pref_status.setText(getString(R.string.pref_device_key_invalid));
+            text_pref_status.setText(getString(R.string.pref_vehicle_id_invalid));
             text_pref_status.setTextColor(Color.RED);
             return;
         }

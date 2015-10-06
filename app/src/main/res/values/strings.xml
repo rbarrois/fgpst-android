@@ -12,10 +12,9 @@
 
     <string name="action_settings">settings</string>
 
-    <string name="pref_device_key">Device key</string>
-    <string name="pref_device_key_summary">Auto generated key for
-        your device. (configure device on free-gps-tracker website)</string>
-    <string name="pref_device_key_invalid">Invalid device key!</string>
+    <string name="pref_vehicle_id">Vehicle ID</string>
+    <string name="pref_vehicle_id_summary">Vehicle ID</string>
+    <string name="pref_vehicle_id_invalid">Invalid Vehicle ID!</string>
 
     <string name="pref_gps_updates">GPS Updates (seconds)</string>
     <integer name="pref_gps_updates_default">60</integer>

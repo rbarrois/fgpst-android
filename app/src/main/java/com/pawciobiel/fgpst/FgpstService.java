@@ -31,7 +31,7 @@ public class FgpstService extends IntentService implements LocationListener {
 
     private SharedPreferences preferences;
     private String urlText;
-    private String device_key;
+    private String vehicle_id;
     private LocationManager locationManager;
     private int pref_gps_updates;
     private long latestUpdate;
@@ -67,7 +67,7 @@ public class FgpstService extends IntentService implements LocationListener {
         editor.commit();
         pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "5")); // seconds
         pref_max_run_time = Integer.parseInt(preferences.getString("pref_max_run_time", "0")); // hours
-        device_key = preferences.getString("device_key", "");
+        vehicle_id = preferences.getString("vehicle_id", "");
 
 
         String defaultUrl = this.getResources().getString(R.string
@@ -119,7 +119,7 @@ public class FgpstService extends IntentService implements LocationListener {
     public void onDestroy() {
         // (user clicked the stop button, or max run time has been reached)
         Log.d(MY_TAG, "in onDestroy, stop listening to the GPS");
-        // FIXME: device_key, json
+        // FIXME: vehicle_id, json
         new FgpstServiceRequest().execute(urlText + "tracker=stop");
 
         locationManager.removeUpdates(this);
@@ -170,7 +170,7 @@ public class FgpstService extends IntentService implements LocationListener {
             json.put("speed", speed);
             json.put("bearing", bearing);
             json.put("timestamp", timestampStr);
-            json.put("device_key", device_key);
+            json.put("vehicle_id", vehicle_id);
         } catch (org.json.JSONException exc){
             Log.d(MY_TAG, "error generating json: " + exc.toString());
         }
@@ -181,7 +181,7 @@ public class FgpstService extends IntentService implements LocationListener {
     public void onLocationChanged(Location location) {
         Log.d(MY_TAG, "in onLocationChanged, latestUpdate == " + latestUpdate);
 
-        if (!PrefValidator.isDeviceKeyValid(device_key)){
+        if (!PrefValidator.isVehicleIDValid(vehicle_id)){
             Intent i = new Intent(FgpstPreferenceActivity.PREFERENCES);
             sendBroadcast(i);
             return;

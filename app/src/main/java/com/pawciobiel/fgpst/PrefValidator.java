@@ -24,7 +24,7 @@ public class PrefValidator {
 
     }
 
-    public static boolean isDeviceKeyValid(String value){
+    public static boolean isVehicleIDValid(String value){
         return (value != null)  &&
                (value.trim().length() >= 3) &&
                (value.trim().length() < 37) &&
@@ -32,9 +32,9 @@ public class PrefValidator {
                         .matcher(value).matches();
     }
 
-    public static boolean isPrefDeviceKeyValid(SharedPreferences preferences){
+    public static boolean isPrefVehicleIDValid(SharedPreferences preferences){
         String value = preferences.getString
-                ("device_key", "");
-        return isDeviceKeyValid(value);
+                ("vehicle_id", "");
+        return isVehicleIDValid(value);
     }
 }

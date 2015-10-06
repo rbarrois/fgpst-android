@@ -51,15 +51,15 @@ public class FgpstPreferenceActivity extends PreferenceActivity {
             }
         });
 
-        pref = findPreference("device_key");
+        pref = findPreference("vehicle_id");
         pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String oldValue = preferences.getString("device_key", "");
-                if (!PrefValidator.isDeviceKeyValid((String) newValue)) {
+                String oldValue = preferences.getString("vehicle_id", "");
+                if (!PrefValidator.isVehicleIDValid((String) newValue)) {
                     Toast.makeText(getApplicationContext(),
-                            getString(R.string.pref_device_key_invalid),
+                            getString(R.string.pref_vehicle_id_invalid),
                             Toast.LENGTH_LONG).show();
                     return false;
                 } else if (FgpstService.isRunning
