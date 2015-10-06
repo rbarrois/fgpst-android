@@ -4,8 +4,8 @@
         android:key="URL"
         android:inputType="textUri"
         android:title="@string/text_legend_url_0"
-        android:summary="(default https://free-gps-tracker.appspot.com/pr )"
-        android:defaultValue="https://free-gps-tracker.appspot.com/pr" />
+        android:summary="(default http://ws.bluebus.fr/gps-tracker/0/ )"
+        android:defaultValue="http://ws.bluebus.fr/gps-tracker/0/" />
 
     <EditTextPreference
         android:key="vehicle_id"
