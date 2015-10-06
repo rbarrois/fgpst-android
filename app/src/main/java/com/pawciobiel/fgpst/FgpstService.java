@@ -179,6 +179,9 @@ public class FgpstService extends IntentService implements LocationListener {
     public void onLocationChanged(Location location) {
         Log.d(MY_TAG, "in onLocationChanged, latestUpdate == " + latestUpdate);
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        vehicle_id = preferences.getString("vehicle_id", "");
+
         if (!PrefValidator.isVehicleIDValid(vehicle_id)){
             Intent i = new Intent(FgpstPreferenceActivity.PREFERENCES);
             sendBroadcast(i);

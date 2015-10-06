@@ -3,6 +3,7 @@ package com.pawciobiel.fgpst;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 
@@ -21,7 +22,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoAnnotations.*;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowPreferenceManager;
 
 //import com.pawciobiel.BuildConfig;
 
@@ -55,6 +58,8 @@ public class FgpstServiceTest {
     public void setUp() throws Exception {
 
 
+        SharedPreferences sharedPreferences = ShadowPreferenceManager.getDefaultSharedPreferences(RuntimeEnvironment.application.getApplicationContext());
+        sharedPreferences.edit().putString("vehicle_id", "12345").commit();
         /*(mLocationManager = (LocationManager)
                 getContext().getSystemService(Context.LOCATION_SERVICE);
         //mLocationManager.addTestProvider(TEST_GPS_PROVIDER, false, false,
@@ -76,8 +81,6 @@ public class FgpstServiceTest {
 
         //Mockito.doReturn("This is the new value!").when(reqMock).execute();
 
-        Intent startIntent = new Intent("test");
-
         FgpstService spy = Mockito.spy(srv);
         Mockito.doNothing().when(spy).executeRequest(Mockito.anyString(),
                 Mockito.<JSONObject>any());
@@ -87,7 +90,7 @@ public class FgpstServiceTest {
                 spy.getCurrentLocation());
 
         //Mockito.doReturn("foo").when(spy).executeRequest(1234);
-        String url = "https://free-gps-tracker.appspot.com/pr";
+        String url = "http://ws.bluebus.fr/gps-tracker/0/";
         JSONObject tjson = new JSONObject();
         try {
             tjson.put("aaa", "bbb");
