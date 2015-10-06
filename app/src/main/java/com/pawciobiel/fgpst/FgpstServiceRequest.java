@@ -15,8 +15,8 @@ public class FgpstServiceRequest extends AsyncTask<String, Void, Void> {
             URL url = new URL(requestData[0]);
             String data = requestData[1];
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.setReadTimeout(1000 /* milliseconds */);
+            conn.setConnectTimeout(1500 /* milliseconds */);
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
