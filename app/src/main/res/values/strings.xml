@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FreeGPSTracker</string>
+    <string name="app_name">BlueTracker</string>
 
     <string name="button_toggle">Track!</string>
 
