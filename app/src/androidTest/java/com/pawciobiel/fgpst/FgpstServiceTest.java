@@ -77,6 +77,7 @@ public class FgpstServiceTest {
         Location testLocation = new Location(TEST_GPS_PROVIDER);
         testLocation.setLatitude(new Double("10.123456789"));
         testLocation.setLongitude(new Double("20.987654321"));
+        mLocationManager.setTestProviderEnabled(TEST_GPS_PROVIDER, true);
         mLocationManager.setTestProviderLocation(TEST_GPS_PROVIDER, testLocation);
 
         //Mockito.doReturn("This is the new value!").when(reqMock).execute();

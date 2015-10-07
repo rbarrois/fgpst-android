@@ -154,16 +154,17 @@ public class FgpstService extends IntentService implements LocationListener {
         double lat = currentLocation.getLatitude();
         double lon = currentLocation.getLongitude();
         double altitude = currentLocation.getAltitude();
+        float accuracy = currentLocation.getAccuracy();
         float speed = currentLocation.getSpeed();
         float bearing = currentLocation.getBearing();
 
         // FIXME: I should use location.getTime()
-        String timestampStr = String.format("%tFT%<tT.%<tLZ",
-                Calendar.getInstance(TimeZone.getTimeZone("Z")));
+        String timestampStr = String.format("%s", currentLocation.getTime());
         JSONObject json = new JSONObject();
         try {
             json.put("lat", getDoubleValue(String.valueOf(lat), 6));
             json.put("lon", getDoubleValue(String.valueOf(lon), 6));
+            json.put("accuracy", accuracy);
             json.put("altitude", altitude);
             json.put("speed", speed);
             json.put("bearing", bearing);
