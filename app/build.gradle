@@ -11,10 +11,19 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword new String(System.console().readPassword("\n\$ Enter keystore password: "))
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword new String(System.console().readPassword("\n\$ Enter key password: "))
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             debuggable true
