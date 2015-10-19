@@ -12,7 +12,7 @@
         android:inputType="text"
         android:title="@string/pref_vehicle_id"
         android:summary="@string/pref_vehicle_id_summary"
-        android:defaultValue="" />
+        android:defaultValue="blue" />
 
     <EditTextPreference
         android:key="pref_gps_updates"
