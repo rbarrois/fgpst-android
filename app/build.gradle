@@ -70,6 +70,8 @@ dependencies {
             dir: 'libs'
     )
 
+    compile 'com.google.android.gms:play-services-location:8.1.0'
+
     testCompile 'junit:junit:4.12'
     testCompile "org.assertj:assertj-core:1.7.0"
     testCompile 'org.mockito:mockito-core:1.9.0'

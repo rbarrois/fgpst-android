@@ -11,15 +11,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONObject;
 
-public class FgpstService extends IntentService implements LocationListener {
+public class FgpstService extends IntentService implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     public static final String NOTIFICATION = "com.pawciobiel.fgpst";
 
@@ -32,10 +37,11 @@ public class FgpstService extends IntentService implements LocationListener {
     private SharedPreferences preferences;
     private String urlText;
     private String vehicle_id;
-    private LocationManager locationManager;
     private int pref_gps_updates;
     private long latestUpdate;
     private Location currentLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean apiClientConnected;
 
     public Location getCurrentLocation(){
         return currentLocation;
@@ -52,30 +58,59 @@ public class FgpstService extends IntentService implements LocationListener {
     public void onCreate() {
         super.onCreate();
         Log.d(MY_TAG, "in onCreate, init GPS stuff");
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            onProviderEnabled(LocationManager.GPS_PROVIDER);
-        } else {
-            onProviderDisabled(LocationManager.GPS_PROVIDER);
-        }
-
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong("stoppedOn", 0);
         editor.commit();
+
+        // Read preferences
         pref_gps_updates = Integer.parseInt(preferences.getString("pref_gps_updates", "5")); // seconds
         vehicle_id = preferences.getString("vehicle_id", "");
-
-
         String defaultUrl = this.getResources().getString(R.string
                 .pref_url_default);
         urlText = preferences.getString("URL", defaultUrl);
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                pref_gps_updates * 1000, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                pref_gps_updates * 1000, 0, this);
+        setupGoogleApiClient();
+    }
+
+    protected synchronized void setupGoogleApiClient() {
+        apiClientConnected = false;
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API)
+            .build();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Log.d(MY_TAG, "GoogleApiClient now connected");
+        apiClientConnected = true;
+        // We want location updates as we start.
+        startLocationUpdates();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // Failed to connect, so what?
+        Log.d(MY_TAG, "GoogleApiClient failed to connect");
+        apiClientConnected = false;
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        // Google APIs crashed. Too bad.
+        Log.d(MY_TAG, "GoogleApiClient crashed");
+        apiClientConnected = false;
+    }
+
+    protected void startLocationUpdates() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(pref_gps_updates);
+        mLocationRequest.setFastestInterval(pref_gps_updates);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
@@ -120,7 +155,9 @@ public class FgpstService extends IntentService implements LocationListener {
         // FIXME: vehicle_id, json
         new FgpstServiceRequest().execute(urlText + "tracker=stop");
 
-        locationManager.removeUpdates(this);
+        if (apiClientConnected) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
 
         isRunning = false;
         stoppedOn = Calendar.getInstance();
@@ -211,17 +248,5 @@ public class FgpstService extends IntentService implements LocationListener {
 
     public void executeRequest(String urlText, JSONObject json){
         new FgpstServiceRequest().execute(urlText, json.toString());
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
     }
 }
