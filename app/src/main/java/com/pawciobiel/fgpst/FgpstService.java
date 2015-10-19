@@ -194,9 +194,8 @@ public class FgpstService extends IntentService implements ConnectionCallbacks, 
         float accuracy = currentLocation.getAccuracy();
         float speed = currentLocation.getSpeed();
         float bearing = currentLocation.getBearing();
+        long timestamp = currentLocation.getTime();
 
-        // FIXME: I should use location.getTime()
-        String timestampStr = String.format("%s", currentLocation.getTime());
         JSONObject json = new JSONObject();
         try {
             json.put("lat", getDoubleValue(String.valueOf(lat), 6));
@@ -205,7 +204,7 @@ public class FgpstService extends IntentService implements ConnectionCallbacks, 
             json.put("altitude", altitude);
             json.put("speed", speed);
             json.put("bearing", bearing);
-            json.put("timestamp", timestampStr);
+            json.put("timestamp", timestamp);
             json.put("vehicle_id", vehicle_id);
         } catch (org.json.JSONException exc){
             Log.d(MY_TAG, "error generating json: " + exc.toString());
