@@ -194,7 +194,7 @@ public class FgpstService extends IntentService implements ConnectionCallbacks, 
         float accuracy = currentLocation.getAccuracy();
         float speed = currentLocation.getSpeed();
         float bearing = currentLocation.getBearing();
-        long timestamp = currentLocation.getTime();
+        float timestamp = currentLocation.getTime() / 1000;
 
         JSONObject json = new JSONObject();
         try {
